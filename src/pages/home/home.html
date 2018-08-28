@@ -1,14 +1,35 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+<ion-content>
+  <div class="teste">
+      <div id="floating-panel">
+        <div class="list" [hidden]="esconderList">
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+            
+            <form [formGroup]="form">
+              <ion-list>
+                  <ion-toolbar color="primary">
+                    <ion-searchbar formControlName="origem" placeholder="Origem"></ion-searchbar>
+                  </ion-toolbar>
+                  <ion-list [hidden]="listOrigem && listOrigem.length == 0">
+                      <ion-item *ngFor="let address of listOrigem" (click)="selectOrigem(address)">
+                        <ion-label >{{ address.description }}</ion-label>
+                      </ion-item>
+                  </ion-list>
+                  <ion-toolbar color="primary">
+                      <ion-searchbar formControlName="destino" placeholder="Destino"></ion-searchbar>
+                    </ion-toolbar>
+                    <ion-list [hidden]="listDestino && listDestino.length == 0">
+                        <ion-item *ngFor="let address of listDestino" (click)="selectDestino(address)">
+                          <ion-label >{{ address.description }}</ion-label>
+                        </ion-item>
+                    </ion-list>
+              </ion-list>
+              <div>
+                  <button ion-button (click)="calculateAndDisplayRoute()">Pesquisar</button>
+              </div>
+            </form>
+        </div>
+      </div>
+  </div>
+  
+  <div #map id="map"></div>
 </ion-content>
