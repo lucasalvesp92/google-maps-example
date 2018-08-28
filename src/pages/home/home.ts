@@ -20,9 +20,9 @@ export class HomePage {
   @ViewChild('map') mapElement: ElementRef;
   esconderList: boolean;
   origem: string;
-  listOrigem: Array<Address>;
+  listOrigem: Array<Address> = [];
   destino: string;
-  listDestino: Array<Address>;
+  listDestino: Array<Address> = [];
   latitude: number;
   longitude: number;
   map: any;
@@ -98,15 +98,14 @@ export class HomePage {
   }
 
   updateSearchResultsOrigem(address: string, list:Array<Address>):void {
-    this.listOrigem = [];
     if (address == '') {
       return;
     }
     this.GoogleAutocomplete.getPlacePredictions({ input: address },
     (predictions, status) => {
       if(predictions) {
-        const verificaSelecao = predictions.find((item) => item.description === address);
         this.listOrigem = [];
+        const verificaSelecao = predictions.find((item) => item.description === address);
         if (verificaSelecao === undefined) {
           predictions.forEach((prediction) => {
             this.listOrigem.push(prediction);
@@ -117,21 +116,19 @@ export class HomePage {
   }
 
   updateSearchResultsDestino(address: string, list:Array<Address>): Array<any>{
-    this.listDestino = [];
     if (address == '') {
       return;
     }
     this.GoogleAutocomplete.getPlacePredictions({ input: address },
     (predictions, status) => {
       if(predictions) {
-        const verificaSelecao = predictions.find((item) => item.description === address);
         this.listDestino = [];
+        const verificaSelecao = predictions.find((item) => item.description === address);
         if (verificaSelecao === undefined) {
           predictions.forEach((prediction) => {
             this.listDestino.push(prediction);
           });
         }
-        return this.listDestino;
       }
     });
   }
