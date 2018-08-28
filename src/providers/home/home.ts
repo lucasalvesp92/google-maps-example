@@ -16,16 +16,8 @@ export class HomeProvider {
     console.log('Hello HomeProvider Provider');
   }
 
-  searchAddress(address: String): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-          'Content-Type':  'application/json; charset=utf-8',
-          'Access-Control-Allow-Origin': '*'
-      })
-    };
-    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${address}&types=geocode&language=pt_BR&key=AIzaSyBQLqkvdlBk_vPiIVzYbZfSPfpnyl2yAmw`
-    let listAddress: Array<Address>;
-    return this.http.get(url, httpOptions);
+  searchAddress(address: String):void{
+    
   }
 
 }
