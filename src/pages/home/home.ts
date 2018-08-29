@@ -5,7 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { HomeProvider } from '../../providers/home/home';
 import { Address } from '../../model/address.model';
 import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 declare var google;
@@ -25,7 +25,9 @@ export class HomePage {
   listDestino: Array<Address> = [];
   latitude: number;
   longitude: number;
+  routeFound: any;
   map: any;
+  ocultarPainelConfirmacao: boolean = true;
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
   GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -71,8 +73,11 @@ export class HomePage {
       if (status === 'OK') {
         console.log(response);
         this.directionsDisplay.setDirections(response);
+        this.ocultarPainelConfirmacao = false;
+        this.routeFound = response.routes[0].legs[0];
       } else {
-        window.alert('Directions request failed due to ' + status);
+        window.alert('Falha ao localizar rota:  ' + status);
+        this.ocultarPainelConfirmacao = true;
       }
     });
   }
@@ -80,8 +85,8 @@ export class HomePage {
   buildForm(): void {
     this.form = this.formBuilder
       .group({
-        origem: [null, null],
-        destino: [null, null]
+        origem: [null, [Validators.required]],
+        destino: [null, [Validators.required]]
       });
   }
 
@@ -136,12 +141,17 @@ export class HomePage {
   selectOrigem(address: string): void {
     this.form.get('origem').setValue(address['description']);
     this.listOrigem = [];
+    if(this.form.valid) {
+      this.calculateAndDisplayRoute();
+    }
   }
 
   selectDestino(address: string): void {
     this.form.get('destino').setValue(address['description']);
     this.listDestino = [];
-  }
-  
 
+    if(this.form.valid) {
+      this.calculateAndDisplayRoute();
+    }
+  }
 }

@@ -16,4 +16,16 @@ page-home {
     #map {
       height: 100%;
     }
+
+    .input-address {
+      position: relative;
+    }
+    .list-address {
+      position: absolute;
+      z-index: 40;
+      width: 95%;
+    }
+    ion-col{
+      align-self: center;
+    }
   }
